@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
+  email: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -30,7 +30,7 @@ function Login() {
   const form = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -40,7 +40,7 @@ function Login() {
 
     try {
       const response = await loginUser({
-        username: data.username,
+        email: data.email,
         password: data.password,
       });
 
@@ -66,12 +66,17 @@ function Login() {
         <div className="space-y-4">
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} className="w-full" />
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    {...field}
+                    className="w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
