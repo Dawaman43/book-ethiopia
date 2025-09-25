@@ -25,7 +25,6 @@ type LoginData = z.infer<typeof loginSchema>;
 
 function Login() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginData>({
@@ -38,7 +37,6 @@ function Login() {
 
   const onSubmit = async (data: LoginData) => {
     setLoading(true);
-    setError(null);
 
     try {
       const response = await loginUser({
@@ -50,7 +48,6 @@ function Login() {
       toast.success("Login successful!");
       form.reset();
     } catch (error) {
-      setError("Login failed. Please check your credentials.");
       toast.error("Login failed. Please check your credentials.");
       console.error("Login error:", error);
     } finally {
@@ -59,7 +56,6 @@ function Login() {
   };
 
   if (loading) return <div className="text-center py-8">Loading...</div>;
-  if (error) return <div className="text-center py-8">Error: {error}</div>;
 
   return (
     <Form {...form}>
