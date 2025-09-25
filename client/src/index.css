@@ -1,8 +1,15 @@
-@import "tailwindcss";
 @import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fjalla+One&family=Fugaz+One&family=Oswald:wght@200..700&display=swap");
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-oswald: "Oswald", sans-serif;
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-fugaz: "Fugaz One", sans-serif;
+  --font-fjalla: "Fjalla One", sans-serif;
+}
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
