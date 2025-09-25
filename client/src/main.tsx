@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import Header from "./components/layout/header.tsx";
+import { Toaster } from "sonner";
 
 function AppWrapper() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function AppWrapper() {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+      <Toaster />
       <AppWrapper />
     </BrowserRouter>
   </StrictMode>
