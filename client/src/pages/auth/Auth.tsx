@@ -1,3 +1,5 @@
+import Login from "@/components/auth/login";
+import Register from "@/components/auth/register";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function AuthPage() {
@@ -13,10 +15,10 @@ function AuthPage() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="login">
-          <div>Login form goes here</div>
+          <Login />
         </TabsContent>
         <TabsContent value="register">
-          <div>Register form goes here</div>
+          <Register />
         </TabsContent>
       </Tabs>
     </div>
