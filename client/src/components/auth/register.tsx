@@ -12,6 +12,7 @@ import {
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { register } from "@/utils/auth";
 
 const registerSchema = z
   .object({
@@ -45,10 +46,18 @@ function Register() {
     },
   });
 
-  const onSubmit = (data: RegisterData) => {
+  const onSubmit = async (data: RegisterData) => {
     setLoading(true);
     try {
-      // Simulate an API call
+      const response = await register({
+        fullName: data.fullName,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log("Registration successful:", response);
+      form.reset();
     } catch (error) {
       setError("Registration failed. Please try again.");
     } finally {
