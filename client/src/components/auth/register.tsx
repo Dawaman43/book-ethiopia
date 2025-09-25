@@ -49,6 +49,7 @@ function Register() {
 
   const onSubmit = async (data: RegisterData) => {
     setLoading(true);
+
     try {
       const response = await register({
         fullName: data.fullName,
@@ -57,6 +58,12 @@ function Register() {
         password: data.password,
       });
 
+      if (data.password !== data.confirmPassword) {
+        setError("Passwords do not match");
+        toast.error("Passwords do not match");
+        setLoading(false);
+        return;
+      }
       console.log("Registration successful:", response);
       toast.success("Registration successful! You can now log in.");
       form.reset();
