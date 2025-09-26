@@ -5,6 +5,13 @@ export const register = async (data: {
   email: string;
   password: string;
   fullName: string;
+  role: "guest" | "host";
+  propertyName?: string;
+  propertyType?: "hotel" | "apartment" | "guesthouse" | "resort";
+  address?: string;
+  city?: string;
+  country?: string;
+  bankAccount?: string;
 }) => {
   const res = await api.post("/auth/register", data);
   return res.data;
