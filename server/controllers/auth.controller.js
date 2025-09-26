@@ -47,6 +47,7 @@ const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
+
     const existingUser = await user.findOne({ email });
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
@@ -62,16 +63,34 @@ const login = async (req, res) => {
       role: existingUser.role,
       username: existingUser.username,
       fullName: existingUser.fullName,
+      email: existingUser.email,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ message: "login successfull", token });
+    // return token + user info
+    res.status(200).json({
+      message: "login successful",
+      token,
+      user: payload,
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const userId = req.user;
+    const existingUser = await user.findById(userId).select("-password");
+    if (!existingUser)
+      return res.status(404).json({ message: "User not found" });
+    res.status(200).json(existingUser);
+  } catch (error) {
+    console.error("Error fetching user: ", error);
   }
 };
 
@@ -85,4 +104,28 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { register, getUsers, login };
+const update = async (req, res) => {
+  try {
+    const userId = req.user;
+    const { fullName, username, password } = req.body;
+
+    const existingUser = await user.findById(userId);
+    if (!existingUser)
+      return res.status(404).json({ message: "User not found" });
+    if (fullName) existingUser.fullName = fullName;
+    if (username) existingUser.username = username;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      existingUser.password = hashedPassword;
+    }
+    await existingUser.save();
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: existingUser });
+  } catch (error) {
+    console.error("Error updating user: ", error);
+  }
+};
+
+module.exports = { register, getUsers, login, getUserById, update };

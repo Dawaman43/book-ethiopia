@@ -12,5 +12,22 @@ export const register = async (data: {
 
 export const login = async (data: { email: string; password: string }) => {
   const res = await api.post("/auth/login", data);
-  return res.data;
+
+  // save auth info
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+
+  return res.data; // returns { message, token, user }
+};
+
+// helper to get logged-in user
+export const getLoggedInUser = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
+// helper to logout
+export const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
